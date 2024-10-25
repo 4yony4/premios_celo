@@ -1,4 +1,5 @@
 
+import 'package:premios_celo/Views/LoginView.dart';
 import 'package:premios_celo/Views/SplashView.dart';
 import 'package:flutter/material.dart';
 
@@ -16,13 +17,14 @@ class MyApp extends StatelessWidget{
       '/splashview':(context) => SplashView(),
       '/homeview':(context) => const HomeView(),
       '/mainview':(context) => const MainView(),
+      '/loginview':(context) =>  LoginView(),
     };
 
 
     MaterialApp app=MaterialApp(
-      title: "MI Primera App",
+      title: "Premios Celo",
       routes: rutas,
-      initialRoute: "/splashview",
+      initialRoute: "/loginview",
       debugShowCheckedModeBanner: true,
     );
 

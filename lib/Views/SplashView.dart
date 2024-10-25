@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SplashView extends StatefulWidget {
@@ -28,7 +29,7 @@ class _SplashViewState extends State<SplashView> {
       setState(() {
         dbPorcentaje += 0.05;
       });
-      await Future.delayed(Duration(seconds: 1));  // Pausa entre incrementos
+      await Future.delayed(Duration(milliseconds: 50));  // Pausa entre incrementos
     }
     Navigator.of(context).pushNamed("/homeview");
   }
