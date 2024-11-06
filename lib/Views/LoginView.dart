@@ -11,11 +11,21 @@ class _LoginViewState extends State<LoginView> {
   TextEditingController tecUser = TextEditingController();
   TextEditingController tecPass = TextEditingController();
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //if(FirebaseAuth.instance.currentUser!=null){
+    //  Navigator.of(context).pushNamed("/userform");
+    //}
+
+  }
+
   void clickSobreLogin() async {
     try {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: tecUser.text, password: tecPass.text);
-      Navigator.of(context).pushNamed("/homeview");
+      Navigator.of(context).pushNamed("/userform");
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
