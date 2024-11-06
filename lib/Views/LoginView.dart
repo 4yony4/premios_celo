@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:premios_celo/FbObjects/FbPerfil.dart';
 
 class LoginView extends StatefulWidget {
   @override
@@ -10,6 +12,7 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   TextEditingController tecUser = TextEditingController();
   TextEditingController tecPass = TextEditingController();
+  final db = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -21,10 +24,26 @@ class _LoginViewState extends State<LoginView> {
 
   }
 
+
   void clickSobreLogin() async {
     try {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: tecUser.text, password: tecPass.text);
+
+      final ref = db.collection("Perfiles").doc(FirebaseAuth.instance.currentUser!.uid).
+    withConverter(
+          fromFirestore: FbPerfil.fromFirestore,
+          toFirestore: (FbPerfil perfil, _) => perfil.toFirestore());
+
+      final docSnap = await ref.get();
+      FbPerfil? miPerfil = docSnap.data(); // Convert to City object
+      print("NOMBRE USUARIO DESCARGADO--->>> ${miPerfil?.nombre}");
+      /*if (city != null) {
+        print(city);
+      } else {
+        print("No such document.");
+      }*/
+
       Navigator.of(context).pushNamed("/userform");
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
+import 'package:premios_celo/FbObjects/FbPerfil.dart';
+
 //import 'package:image_picker_web/image_picker_web.dart';
 
 class UserForm extends StatefulWidget {
@@ -69,14 +71,15 @@ class _UserFormState extends State<UserForm> {
       String uidUsuario=FirebaseAuth.instance.currentUser!.uid;
 
       String urlImg=await subirImagen(uidUsuario);
-      Map<String,dynamic> datosPerfil={
-        "nombre":_nameController.text,
-        "edad":_ageController.text,
-        "apodo":_nicknameController.text,
-        "imagenURL":urlImg
-      };
 
-      db.collection("Perfiles").doc(uidUsuario).set(datosPerfil);
+      FbPerfil perfilNuevo=FbPerfil(
+          nombre: _nameController.text,
+          edad: int.parse(_ageController.text),
+          apodo: _nicknameController.text,
+          imagenURL: urlImg
+      );
+
+      db.collection("Perfiles").doc(uidUsuario).set(perfilNuevo.toFirestore());
 
       setState(() {
         blUploading=false;
