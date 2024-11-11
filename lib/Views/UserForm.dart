@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 import 'package:premios_celo/FbObjects/FbPerfil.dart';
+import 'package:premios_celo/Singletone/DataHolder.dart';
 
 //import 'package:image_picker_web/image_picker_web.dart';
 
@@ -79,7 +80,9 @@ class _UserFormState extends State<UserForm> {
           imagenURL: urlImg
       );
 
-      db.collection("Perfiles").doc(uidUsuario).set(perfilNuevo.toFirestore());
+      await db.collection("Perfiles").doc(uidUsuario).set(perfilNuevo.toFirestore());
+
+      DataHolder().miPerfil=perfilNuevo;
 
       setState(() {
         blUploading=false;

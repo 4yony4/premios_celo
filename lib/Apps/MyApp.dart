@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget{
     MaterialApp app=MaterialApp(
       title: "Premios Celo",
       routes: rutas,
-      initialRoute: "/loginview",
+      initialRoute: "/homeview",
       debugShowCheckedModeBanner: true,
     );
 

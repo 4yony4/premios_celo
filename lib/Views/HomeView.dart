@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:premios_celo/Singletone/DataHolder.dart';
+
+import 'PostsView.dart';
 
 class HomeView extends StatefulWidget{
   const HomeView({super.key});
@@ -52,7 +55,7 @@ class _HomeViewPageState extends State<HomeView>{
       body: Column(
         children: [
           blVisible ? const Text("Hola Mundo"):const Text("Hastaluego Mundo"),
-          if(blVisible)const Text("Soy Yony"),
+          if(blVisible)Text("Soy"),
           if(blVisible)const Text("Bienvenido"),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -69,6 +72,7 @@ class _HomeViewPageState extends State<HomeView>{
           ),
           const Text("CONTADOR DE CLICKS",style: TextStyle(fontSize: 30,color: Colors.pink),),
           Text("C:$iContador",style: const TextStyle(fontSize: 30,color: Colors.pink),),
+          PostsView(),
         ],
       ),
       floatingActionButton: IconButton(onPressed: (){
