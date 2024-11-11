@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:premios_celo/FbObjects/FbPerfil.dart';
+import 'package:premios_celo/Singletone/DataHolder.dart';
 
 class LoginView extends StatefulWidget {
   @override
@@ -34,17 +35,15 @@ class _LoginViewState extends State<LoginView> {
     withConverter(
           fromFirestore: FbPerfil.fromFirestore,
           toFirestore: (FbPerfil perfil, _) => perfil.toFirestore());
-
       final docSnap = await ref.get();
-      FbPerfil? miPerfil = docSnap.data(); // Convert to City object
-      print("NOMBRE USUARIO DESCARGADO--->>> ${miPerfil?.nombre}");
-      /*if (city != null) {
-        print(city);
-      } else {
-        print("No such document.");
-      }*/
+      DataHolder().miPerfil = docSnap.data(); // Convert to City object
 
-      Navigator.of(context).pushNamed("/userform");
+      if (DataHolder().miPerfil != null) {
+        Navigator.of(context).pushNamed("/homeview");
+      } else {
+        Navigator.of(context).pushNamed("/userform");
+      }
+
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
