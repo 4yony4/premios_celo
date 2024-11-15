@@ -8,6 +8,7 @@ import 'package:premios_celo/Views/UserForm.dart';
 
 import '../Views/HomeView.dart';
 import '../Views/MainView.dart';
+import '../Views/PostDetails.dart';
 
 class MyApp extends StatelessWidget{
   const MyApp({super.key});
@@ -23,6 +24,8 @@ class MyApp extends StatelessWidget{
       '/loginview':(context) =>  LoginView(),
       '/registerview':(context) =>  RegisterView(),
       '/userform':(context) =>  UserForm(),
+      //'/postdetails':(context) =>  PostDetails(onClose: () {  },),
+
     };
 
 

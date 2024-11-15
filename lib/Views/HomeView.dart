@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:premios_celo/Singletone/DataHolder.dart';
+import 'package:premios_celo/Views/LoginView.dart';
+import 'package:premios_celo/Views/PostDetails.dart';
 
+import 'MiDrawer1.dart';
 import 'PostsView.dart';
 
 class HomeView extends StatefulWidget{
@@ -22,6 +25,7 @@ class _HomeViewPageState extends State<HomeView>{
 
   int iContador=0;
   bool blVisible=true;
+  bool blListaPostsVisible=true;
 
   void clickDelBotonDeIcono(){
     setState(() {
@@ -47,12 +51,32 @@ class _HomeViewPageState extends State<HomeView>{
     return columna;
   }
 
+  void onPostItem_MasDatosClicked(int indicePost){
+    DataHolder().fbPostSeleccionado=DataHolder().arPosts[indicePost];
+    setState(() {
+      blListaPostsVisible=false;
+    });
+  }
+
+  void onPostDetails_Close(){
+    setState(() {
+      blListaPostsVisible=true;
+    });
+  }
+
   Widget pintadoComoFlutter(BuildContext context){
-
-
     return Scaffold(
-      appBar: AppBar(title: const Text("MI PRIMERA APP"),backgroundColor: Colors.amber,),
-      body: Column(
+      appBar: AppBar(title: const Text("PREMIOS CELO"),
+        backgroundColor: Colors.amber,
+        actions: [
+          IconButton(onPressed: (){}, icon: Icon(Icons.add))
+        ],
+      ),
+      drawer: Drawer(
+        child: MiDrawer1(),
+      ),
+      body:
+      Column(
         children: [
           blVisible ? const Text("Hola Mundo"):const Text("Hastaluego Mundo"),
           if(blVisible)Text("Soy"),
@@ -72,13 +96,27 @@ class _HomeViewPageState extends State<HomeView>{
           ),
           const Text("CONTADOR DE CLICKS",style: TextStyle(fontSize: 30,color: Colors.pink),),
           Text("C:$iContador",style: const TextStyle(fontSize: 30,color: Colors.pink),),
-          PostsView(),
+          blListaPostsVisible?
+            PostsView(onMasDatosClicked: onPostItem_MasDatosClicked,):
+            PostDetails(onClose: onPostDetails_Close,),
         ],
       ),
       floatingActionButton: IconButton(onPressed: (){
         //Navigator.of(context).popAndPushNamed("/mainview");
         Navigator.of(context).pushNamed("/mainview");
       }, icon: const FaIcon(FontAwesomeIcons.airbnb)),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(onPressed: (){}, icon: Icon(Icons.home)),
+            IconButton(onPressed: (){}, icon: Icon(Icons.search)),
+            IconButton(onPressed: (){}, icon: Icon(Icons.ondemand_video_sharp)),
+            IconButton(onPressed: (){}, icon: Icon(Icons.shopping_basket)),
+            IconButton(onPressed: (){}, icon: Icon(Icons.settings))
+          ],
+        ),
+      ),
     );
   }
 

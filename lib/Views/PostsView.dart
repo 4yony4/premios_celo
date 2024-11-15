@@ -9,6 +9,10 @@ import '../Items/PostItem.dart';
 
 class PostsView extends StatefulWidget{
 
+  final Function(int i) onMasDatosClicked;
+
+  PostsView({super.key,required this.onMasDatosClicked});
+
   @override
   State<PostsView> createState() => _PostsViewState();
 }
@@ -25,17 +29,23 @@ class _PostsViewState extends State<PostsView> {
   }
 
   void loadData() async{
-    setState(() async{
-      arPosts = await DataHolder().descargarTodosPosts();
-    });
+    List<FbPost> arTemp=await DataHolder().descargarTodosPosts(true);
 
+    if(arTemp.isNotEmpty){
+      arPosts.clear();
+      setState((){
+        arPosts.addAll(arTemp);
+      });
+    }
   }
 
   Widget? celdaBuilder(BuildContext contexto, int indice){
     return PostItem(
         sTitulo: arPosts[indice].sTitulo,
         sBody: arPosts[indice].sCuerpo,
-        sUrlImg: arPosts[indice].sImgUrl
+        sUrlImg: arPosts[indice].sImgUrl,
+        iIndice: indice,
+        onMasDatosClicked:widget.onMasDatosClicked
     );
   }
 
@@ -50,7 +60,20 @@ class _PostsViewState extends State<PostsView> {
   }
 
   Widget separatorBuilder(BuildContext contexto, int indice){
-    return IconButton(onPressed: (){}, icon: Icon(Icons.accessibility));
+    return
+    Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton(onPressed: (){}, icon: Icon(Icons.thumb_up)),
+        Text("1450"),
+        IconButton(onPressed: (){}, icon: Icon(Icons.thumb_down)),
+        Text("623"),
+        IconButton(onPressed: (){}, icon: Icon(Icons.share)),
+      ],
+    );
+
+
+
     //return SplashView();
   }
 

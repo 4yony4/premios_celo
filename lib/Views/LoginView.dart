@@ -65,6 +65,9 @@ class _LoginViewState extends State<LoginView> {
         children: [
           const Text("LOGIN PREMIOS CELO"),
           TextFormField(
+            onChanged: (String valor){
+
+            },
             controller: tecUser,
             decoration: const InputDecoration(
               labelText: 'Enter your username', // Hint

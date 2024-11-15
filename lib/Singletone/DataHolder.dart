@@ -9,6 +9,8 @@ class DataHolder{
 
 
   FbPerfil? miPerfil;
+  FbPost? fbPostSeleccionado;
+  List<FbPost> arPosts=[];
 
   DataHolder._internal();
 
@@ -17,8 +19,9 @@ class DataHolder{
   }
 
 
-  Future<List<FbPost>> descargarTodosPosts() async{
-    List<FbPost> arPosts=[];
+  Future<List<FbPost>> descargarTodosPosts(bool blDescargaUnica) async{
+    if(blDescargaUnica==true && arPosts.isNotEmpty) return arPosts;
+    arPosts.clear();
     var db = FirebaseFirestore.instance;
 
     final ref = db.collection("Posts").withConverter(
