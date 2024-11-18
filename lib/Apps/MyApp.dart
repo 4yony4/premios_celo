@@ -8,6 +8,7 @@ import 'package:premios_celo/Views/UserForm.dart';
 
 import '../Views/HomeView.dart';
 import '../Views/MainView.dart';
+import '../Views/MapSample.dart';
 import '../Views/PostDetails.dart';
 
 class MyApp extends StatelessWidget{
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget{
       '/loginview':(context) =>  LoginView(),
       '/registerview':(context) =>  RegisterView(),
       '/userform':(context) =>  UserForm(),
+      '/mapview':(context) => MapSample(),
       //'/postdetails':(context) =>  PostDetails(onClose: () {  },),
 
     };
@@ -47,7 +49,7 @@ class MyApp extends StatelessWidget{
     MaterialApp app=MaterialApp(
       title: "Premios Celo",
       routes: rutas,
-      initialRoute: "/homeview",
+      initialRoute: "/mapview",
       debugShowCheckedModeBanner: true,
     );
 

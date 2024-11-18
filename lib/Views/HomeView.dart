@@ -4,6 +4,7 @@ import 'package:premios_celo/Singletone/DataHolder.dart';
 import 'package:premios_celo/Views/LoginView.dart';
 import 'package:premios_celo/Views/PostDetails.dart';
 
+import '../CustomViews/IGButton.dart';
 import 'MiDrawer1.dart';
 import 'PostsView.dart';
 
@@ -84,9 +85,7 @@ class _HomeViewPageState extends State<HomeView>{
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextButton(onPressed: (){
-
-              }, child: const Text("Btn1")),
+              IGButton(onIGPressed: (){},),
               TextButton(onPressed: (){}, child: const Text("Btn2")),
               IconButton(
                   icon: const FaIcon(FontAwesomeIcons.gamepad),
