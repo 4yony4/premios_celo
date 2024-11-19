@@ -10,6 +10,7 @@ import '../Views/HomeView.dart';
 import '../Views/MainView.dart';
 import '../Views/MapSample.dart';
 import '../Views/PostDetails.dart';
+import '../Views/WeatherScreen.dart';
 
 class MyApp extends StatelessWidget{
   const MyApp({super.key});
@@ -26,6 +27,8 @@ class MyApp extends StatelessWidget{
       '/registerview':(context) =>  RegisterView(),
       '/userform':(context) =>  UserForm(),
       '/mapview':(context) => MapSample(),
+      '/wheaterscreen':(context) => WeatherScreen(),
+
       //'/postdetails':(context) =>  PostDetails(onClose: () {  },),
 
     };
@@ -49,7 +52,7 @@ class MyApp extends StatelessWidget{
     MaterialApp app=MaterialApp(
       title: "Premios Celo",
       routes: rutas,
-      initialRoute: "/mapview",
+      initialRoute: "/wheaterscreen",
       debugShowCheckedModeBanner: true,
     );
 
