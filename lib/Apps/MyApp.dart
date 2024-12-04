@@ -1,7 +1,9 @@
 
 import 'package:premios_celo/Singletone/DataHolderV1.dart';
+import 'package:premios_celo/Views/ForoView.dart';
 import 'package:premios_celo/Views/LoginView.dart';
 import 'package:premios_celo/Views/RegisterView.dart';
+import 'package:premios_celo/Views/SelectForosView.dart';
 import 'package:premios_celo/Views/SplashView.dart';
 import 'package:flutter/material.dart';
 import 'package:premios_celo/Views/UserForm.dart';
@@ -28,7 +30,8 @@ class MyApp extends StatelessWidget{
       '/userform':(context) =>  UserForm(),
       '/mapview':(context) => MapSample(),
       '/wheaterscreen':(context) => WeatherScreen(),
-
+      '/foroview':(context) => ForoView(),
+      '/chatsview':(context) => SelectForosView(),
       //'/postdetails':(context) =>  PostDetails(onClose: () {  },),
 
     };
@@ -52,7 +55,7 @@ class MyApp extends StatelessWidget{
     MaterialApp app=MaterialApp(
       title: "Premios Celo",
       routes: rutas,
-      initialRoute: "/wheaterscreen",
+      initialRoute: "/chatsview",
       debugShowCheckedModeBanner: true,
     );
 
