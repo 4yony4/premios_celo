@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:premios_celo/FbObjects/FbChat.dart';
 import 'package:premios_celo/FbObjects/FbPost.dart';
 
 import '../FbObjects/FbPerfil.dart';
+import 'PlatformAdmin.dart';
 
 class DataHolder{
 
@@ -15,10 +17,17 @@ class DataHolder{
 
   FbChat? fbChatSelected;
 
+  PlatformAdmin? platformAdmin;
+
+
   DataHolder._internal();
 
   factory DataHolder(){
     return _instance;
+  }
+
+  void initPlatformAdmin(BuildContext context){
+    platformAdmin = PlatformAdmin(context: context);
   }
 
 

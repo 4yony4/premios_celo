@@ -68,27 +68,37 @@ class _ForoViewState extends State<ForoView> {
 
       body:
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 100),
+            padding: EdgeInsets.symmetric(horizontal: DataHolder().platformAdmin!.getScreenWidth()*0.1),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
 
-                SizedBox(
-                  height: 450,
+                Container(
+                  color: Colors.amber,
+                  width: DataHolder().platformAdmin!.getScreenWidth()*0.8,
+                  height: DataHolder().platformAdmin!.getScreenHeight()*0.5,
                   child: ListView.builder(itemBuilder: mensajeBuilder,itemCount: arFbMensajes.length,),
                 ),
                 Container(
-                  width: 200,
+                  width: DataHolder().platformAdmin!.getScreenWidth()*0.8,
                   color: Colors.cyanAccent,
                   child: TextField(controller: imgcontroller,),
                 ),
                 Row(children: [
                   Container(
-                    width: 200,
+                    width: DataHolder().platformAdmin!.getScreenWidth()*0.7,
                     color: Colors.tealAccent,
-                    child: TextField(controller: controller,),
+                    child: TextField(
+                      controller: controller,
+                      style: TextStyle(fontSize: DataHolder().platformAdmin!.getScreenWidth()*0.05),
+
+                    ),
                   ),
-                  IconButton(onPressed: presionarEnvio, icon: Icon(Icons.send))
+                  SizedBox(
+                    width: DataHolder().platformAdmin!.getScreenWidth()*0.1,
+                    child: IconButton(onPressed: presionarEnvio, icon: Icon(Icons.send)),
+                  )
+
                 ],),
               ],
             ),
@@ -104,7 +114,10 @@ class _ForoViewState extends State<ForoView> {
       width: 250,
       child: Row(
         children: [
-          Text("${arFbMensajes[indice].sCuerpo}",maxLines: 3,),
+          Text("${arFbMensajes[indice].sCuerpo}",
+            maxLines: 3,
+            style: TextStyle(fontSize: DataHolder().platformAdmin!.getScreenHeight()*0.07),
+          ),
           if(arFbMensajes[indice].sImgUrl.isNotEmpty)Image.network(arFbMensajes[indice].sImgUrl)
         ],
       ),

@@ -1,4 +1,5 @@
 
+import 'package:premios_celo/Singletone/DataHolder.dart';
 import 'package:premios_celo/Singletone/DataHolderV1.dart';
 import 'package:premios_celo/Views/ForoView.dart';
 import 'package:premios_celo/Views/LoginView.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-
+    DataHolder().initPlatformAdmin(context);
 
     Map<String,Widget Function(BuildContext)> rutas = {
       '/splashview':(context) => SplashView(),
