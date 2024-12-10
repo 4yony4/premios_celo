@@ -7,6 +7,7 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 
+//const functions = require('firebase-functions');
 const {onRequest} = require("firebase-functions/v2/https");
 const logger = require("firebase-functions/logger");
 
@@ -19,10 +20,38 @@ const {getFirestore} = require("firebase-admin/firestore");
 const express = require('express');
 const expressApp = express();
 
+expressApp.use(express.json());
+
 const app=initializeApp();
 
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
+
+const knownInsults = [
+  'idiot',
+  'stupid',
+  'dumb',
+  'fool',
+  'jerk',
+  'moron',
+  'idiota',
+  'estúpido',
+  'imbécil',
+  'tonto',
+  'tarado',
+  'inútil',
+  'burro',
+  'cabrón',
+  'mierda',
+  'payaso',
+  'gilipollas',
+  'pendejo',
+  'asno',
+  'zopenco',
+  'cretino'
+];
+
+
 
 
 // Create and deploy your first functions
@@ -41,8 +70,37 @@ exports.agregarMensajeAChat = onRequest(async (req, res) => {
   res.json({result: `Message with ID: ${writeResult.id} added.`});
 });
 
+// Listens for new messages added to /messages/:documentId/original
+// and saves an uppercased version of the message
+// to /messages/:documentId/uppercase
+exports.makeuppercase = onDocumentCreated("/chats/9jsvxsiwVEEGMcKy1YNm/mensajes/{documentId}", (event) => {
+
+  const datosMensaje = event.data.data();
+  
+  //logger.log("Uppercasing", event.params.documentId, datosMensaje.sCuerpo);
+
+  //const sCuerpoMayusculas=datosMensaje.sCuerpo.toUpperCase();
+
+  let words = datosMensaje.sCuerpo.split(/\b/); 
+
+  const censoredWords = words.map(word => {
+
+    const lowercaseWord = word.toLowerCase();
+
+    if (knownInsults.includes(lowercaseWord)) {
+      return censorWord(word);
+    }
+    return word;
+  });
+
+  // Reconstruct the censored text
+  const censoredText = censoredWords.join('');
+
+  return event.data.ref.set({sCuerpo:censoredText,blModificadoEnServidor:true}, {merge: true});
+});
+
 //exports.mostrarTodosLosMensajes = onRequest(async (req, res) => {
-expressApp.get('/mostrarTodosLosMensajes', async (req, res) => {
+expressApp.get('/api/mostrarTodosLosMensajes', async (req, res) => {
     //const docRef= db.collection("chats").doc("9jsvxsiwVEEGMcKy1YNm");
     const sUserToken = req.query.sUserToken;
     if (!sUserToken) {
@@ -122,3 +180,17 @@ async function checkAndChargeCredits(sCompanyToken,iCreditCost){
     return false;
   }
 }
+
+// A helper function to hide insults by replacing characters with asterisks.
+// This function attempts to preserve word length while obscuring its letters.
+function censorWord(word) {
+  return word[0] + '*'.repeat(word.length - 1);
+}
+
+expressApp.get('/api/hello', (req, res) => {
+  console.log('Received GET /hello request');
+  res.send('Hello from Express!');
+});
+
+//exports.api = functions.https.onRequest(expressApp); // Ensure this export is correct
+exports.expressApp = onRequest(expressApp);
