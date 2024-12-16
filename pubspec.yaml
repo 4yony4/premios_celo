@@ -45,6 +45,7 @@ dependencies:
   google_maps_flutter: ^2.10.0
   http: ^1.2.2
   geolocator: ^13.0.2
+  firebase_remote_config: ^5.2.0
 
 dev_dependencies:
   flutter_test:
