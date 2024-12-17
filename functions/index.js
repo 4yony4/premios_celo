@@ -7,8 +7,8 @@ const storageFunctions = require('./modulos/storageFunctions');
 
 
 
-
 // Export your functions
-exports.validatenewuser = authFunctions.validatenewuser;
-exports.generateThumbnail = storageFunctions.generateThumbnail;
-exports.expressApp = ddbbFunctions.expressApp;
+//exports.validatenewuser = authFunctions.validatenewuser;
+//exports.generateThumbnail = storageFunctions.generateThumbnail;
+//exports.expressApp = ddbbFunctions.expressApp;
+exports.makeuppercase = ddbbFunctions.makeuppercase;

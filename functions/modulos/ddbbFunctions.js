@@ -17,6 +17,7 @@ const {onDocumentCreated,onDocumentDeleted,onDocumentUpdated} = require("firebas
 // The Firebase Admin SDK to access Firestore.
 const {initializeApp} = require("firebase-admin/app");
 const {getFirestore} = require("firebase-admin/firestore");
+const {getMessaging} = require("firebase-admin/messaging");
 //const {admin} = require("firebase-admin");
 
 const express = require('express');
@@ -28,6 +29,7 @@ expressApp.use(express.json());
 
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore();
+const mensajeria=getMessaging();
 //const db = admin.firestore();
 
 const knownInsults = [
@@ -77,7 +79,7 @@ exports.agregarMensajeAChat = onRequest(async (req, res) => {
 // Listens for new messages added to /messages/:documentId/original
 // and saves an uppercased version of the message
 // to /messages/:documentId/uppercase
-exports.makeuppercase = onDocumentCreated("/chats/9jsvxsiwVEEGMcKy1YNm/mensajes/{documentId}", (event) => {
+exports.makeuppercase = onDocumentCreated("/chats/{chatId}/mensajes/{documentId}", (event) => {
 
   const datosMensaje = event.data.data();
   
@@ -99,6 +101,10 @@ exports.makeuppercase = onDocumentCreated("/chats/9jsvxsiwVEEGMcKy1YNm/mensajes/
 
   // Reconstruct the censored text
   const censoredText = censoredWords.join('');
+
+  datosMensaje.sCuerpo=censoredText;
+
+  enviarPushNotifications(datosMensaje,event.params.chatId);
 
   return event.data.ref.set({sCuerpo:censoredText,blModificadoEnServidor:true}, {merge: true});
 });
@@ -195,6 +201,57 @@ expressApp.get('/api/hello', (req, res) => {
   console.log('Received GET /hello request');
   res.send('Hello from Express!');
 });
+
+async function enviarPushNotifications(datosMensaje,chatId){
+  var docRef = db.collection("chats").doc(chatId);
+  const chatDescargado = await docRef.get();
+
+  console.log("MENSAJE data:", datosMensaje);
+
+  //if (chatDescargado.exists()) {
+    console.log("Document data:", chatDescargado.data());
+    const datosChat=chatDescargado.data();
+
+    const tokens = [];
+    for (const userUID of datosChat.roster) {
+      console.log("UserID data:", userUID);
+
+      var docRef = db.collection("Perfiles").doc(userUID);
+      const perfilDescargado = await docRef.get();
+
+      if(perfilDescargado.exists){
+        console.log("fcm_token data:", perfilDescargado.data().fcm_token);
+        tokens.push(perfilDescargado.data().fcm_token);
+      }
+    }
+
+    console.log("TOKENS PARA ENVIAR!!! ", tokens);
+
+    if (tokens.length > 0) {
+      const message = {
+        tokens: tokens, // FCM tokens array (max 500 tokens per request)
+        notification: {
+          title: datosMensaje.sTitulo || 'Notification Title',
+          body: datosMensaje.sCuerpo || 'Notification Body',
+        },
+        data: datosMensaje.data || {}, // Optional custom data
+      };
+  
+      console.log("MENSAJE PARA ENVIAR!!! ", message);
+      // Send the message
+      const response = await mensajeria.sendEachForMulticast(message);
+
+      console.log("RESPUESTA FUE: ",response);
+    }
+
+
+  //} else {
+    // docSnap.data() will be undefined in this case
+    //console.log("No such document!");
+  //}
+
+
+}
 
 
 //exports.api = functions.https.onRequest(expressApp); // Ensure this export is correct

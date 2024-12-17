@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 
@@ -40,7 +41,21 @@ void main() async{
   temp2=remoteConfig.getString("example_param_4");
   print("$temp2");
 
+  // You may set the permission requests to "provisional" which allows the user to choose what type
+// of notifications they would like to receive once the user receives a notification.
+  final notificationSettings = await FirebaseMessaging.instance.requestPermission(provisional: true);
 
+  String? sToken = await FirebaseMessaging.instance.getToken();
+
+  print("MI TOKEN ES: $sToken");
+
+  FirebaseMessaging.instance.onTokenRefresh
+      .listen((fcmToken) {
+    sToken=fcmToken;
+  })
+      .onError((err) {
+    // Error getting token.
+  });
 
   runApp(const MyApp());
 }

@@ -39,6 +39,13 @@
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAfi2GW4y2fq8TAzFkf7k-cUK4aqvLg_mc"/>
 
+        <meta-data
+            android:name="firebase_messaging_auto_init_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false" />
+
 
     </application>
     <!-- Required to query activities that can process text, see:
